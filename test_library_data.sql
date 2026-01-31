@@ -3,6 +3,20 @@
 -- Adds at least 10 borrows records (respecting 1-to-1 constraints)
 
 PROMPT 'Inserting sample data...';
+SET DEFINE OFF; -- prevent & from being treated as substitution variables in SQL*Plus/SQLcl
+
+-- TRUNCATE existing data (safe order: truncate children first, then parents)
+PROMPT 'Truncating tables: borrows -> book_authors -> book_themes -> physical_books -> books -> authors -> themes -> users';
+TRUNCATE TABLE borrows;
+TRUNCATE TABLE book_authors;
+TRUNCATE TABLE book_themes;
+TRUNCATE TABLE physical_books;
+TRUNCATE TABLE books;
+TRUNCATE TABLE authors;
+TRUNCATE TABLE themes;
+TRUNCATE TABLE users;
+COMMIT;
+PROMPT 'Truncate complete. Proceeding to insert sample data...';
 
 -- AUTHORS (4+)
 INSERT INTO authors (name, bio) VALUES ('J. K. Rowling', 'Children fantasy author');
