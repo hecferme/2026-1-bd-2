@@ -73,6 +73,75 @@ VALUES (
   (SELECT t.theme_id FROM themes t WHERE t.name = 'Mystery')
 );
 
+-- ADDITIONAL AUTHORS & THEMES for extended examples
+INSERT INTO authors (name, bio) VALUES ('Neil Gaiman', 'Contemporary fantasy author');
+INSERT INTO authors (name, bio) VALUES ('Terry Pratchett', 'Comic fantasy author');
+
+INSERT INTO themes (name, description) VALUES ('Adventure', 'Action and adventure');
+INSERT INTO themes (name, description) VALUES ('Philosophy', 'Philosophical fiction');
+
+-- NEW BOOKS (no borrows yet)
+INSERT INTO books (title, isbn, publisher, publication_year) VALUES ('Tales of Two', '9780000000001', 'Collab Press', 2020);
+INSERT INTO books (title, isbn, publisher, publication_year) VALUES ('Anthology of Many Minds', '9780000000002', 'Collective Press', 2021);
+
+-- Link BOOK_AUTHORS for new books
+-- 'Tales of Two' has two authors
+INSERT INTO book_authors (book_id, author_id)
+VALUES (
+  (SELECT b.book_id FROM books b WHERE b.title = 'Tales of Two'),
+  (SELECT a.author_id FROM authors a WHERE a.name = 'Neil Gaiman')
+);
+INSERT INTO book_authors (book_id, author_id)
+VALUES (
+  (SELECT b.book_id FROM books b WHERE b.title = 'Tales of Two'),
+  (SELECT a.author_id FROM authors a WHERE a.name = 'Terry Pratchett')
+);
+
+-- 'Anthology of Many Minds' has three authors
+INSERT INTO book_authors (book_id, author_id)
+VALUES (
+  (SELECT b.book_id FROM books b WHERE b.title = 'Anthology of Many Minds'),
+  (SELECT a.author_id FROM authors a WHERE a.name = 'Isaac Asimov')
+);
+INSERT INTO book_authors (book_id, author_id)
+VALUES (
+  (SELECT b.book_id FROM books b WHERE b.title = 'Anthology of Many Minds'),
+  (SELECT a.author_id FROM authors a WHERE a.name = 'Agatha Christie')
+);
+INSERT INTO book_authors (book_id, author_id)
+VALUES (
+  (SELECT b.book_id FROM books b WHERE b.title = 'Anthology of Many Minds'),
+  (SELECT a.author_id FROM authors a WHERE a.name = 'George R. R. Martin')
+);
+
+-- Link BOOK_THEMES for new books
+INSERT INTO book_themes (book_id, theme_id)
+VALUES (
+  (SELECT b.book_id FROM books b WHERE b.title = 'Tales of Two'),
+  (SELECT t.theme_id FROM themes t WHERE t.name = 'Fantasy')
+);
+INSERT INTO book_themes (book_id, theme_id)
+VALUES (
+  (SELECT b.book_id FROM books b WHERE b.title = 'Tales of Two'),
+  (SELECT t.theme_id FROM themes t WHERE t.name = 'Adventure')
+);
+
+INSERT INTO book_themes (book_id, theme_id)
+VALUES (
+  (SELECT b.book_id FROM books b WHERE b.title = 'Anthology of Many Minds'),
+  (SELECT t.theme_id FROM themes t WHERE t.name = 'Science Fiction')
+);
+INSERT INTO book_themes (book_id, theme_id)
+VALUES (
+  (SELECT b.book_id FROM books b WHERE b.title = 'Anthology of Many Minds'),
+  (SELECT t.theme_id FROM themes t WHERE t.name = 'Historical')
+);
+INSERT INTO book_themes (book_id, theme_id)
+VALUES (
+  (SELECT b.book_id FROM books b WHERE b.title = 'Anthology of Many Minds'),
+  (SELECT t.theme_id FROM themes t WHERE t.name = 'Philosophy')
+);
+
 -- PHYSICAL BOOKS (create 12 physical copies across books so we can create 10 unique borrows)
 INSERT INTO physical_books (book_id, barcode, physical_condition, status)
 VALUES ((SELECT book_id FROM books WHERE title = 'Harry Potter and the Philosopher''s Stone'), 'BC001', 'Good', 'AVAILABLE');
